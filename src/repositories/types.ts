@@ -4,6 +4,7 @@ export type PhotoDBType = WithId<{
     userId: ObjectId
     userName: string
     imageSrc: string
+    description: string
     addedAt: Date
 }>
 export type UserDBType = WithId<{

@@ -1,12 +1,13 @@
 import {Request, Response, Router} from 'express'
 import { ObjectId } from 'mongodb'
 import {photosRepository} from '../repositories/photos-repository'
+import {photosService} from "../domain/photo-service";
 
 export const photosRouter = Router({})
 
 photosRouter.post('/',
-    async (req: Request<{},{},{userId: string, imageSrc: string}>, res: Response) => {
-        const photo = await photosRepository.createPhoto(new ObjectId(req.body.userId), req.body.imageSrc)
+    async (req: Request<{},{},{userId: string, imageSrc: string, description: string}>, res: Response) => {
+        const photo = await photosService.createPhoto(new ObjectId(req.body.userId), req.body.imageSrc, req.body.description)
 
         if (!photo) res.status(400).send();
 
@@ -23,9 +24,9 @@ photosRouter.put('/:id',
         }
     })
 
-photosRouter.get('/', (req: Request<{},{},{},{userId?: string}>, res: Response) => {
+photosRouter.get('/', async(req: Request<{},{},{},{userId?: string}>, res: Response) => {
     const userId = req.query.userId ? new ObjectId(req.query.userId) : null;
-    const foundUsers = photosRepository.findPhotos(userId)
+    const foundUsers = await photosService.findPhotos(userId)
     res.send(foundUsers)
 })
 
