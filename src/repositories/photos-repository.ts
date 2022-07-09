@@ -16,12 +16,6 @@ export const photosRepository = {
         return {_id: new ObjectId(), imageSrc: '', userId: userId, userName: '', addedAt: new Date()}
     },
     async updatePhotoDescription(id: ObjectId, description: string): Promise<boolean> {
-        // try() {
-        //
-        // }
-        // catch () {
-        //
-        // }
         return true
     },
     async deletePhoto(id: ObjectId): Promise<boolean> {

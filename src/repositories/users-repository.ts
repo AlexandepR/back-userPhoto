@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb'
+import {InsertOneResult, ObjectId} from 'mongodb'
 import {UserDBType} from './types'
 import {usersCollection} from './db'
 
@@ -12,11 +12,12 @@ export const usersRepository = {
     async createUser(userName: string, description: string): Promise<UserDBType> {
         const newUser = {
             _id: new ObjectId(),
-            userName: userName,
-            description: description,
-            addedAt: Date.now()
+            userName,
+            description,
+            addedAt: new Date()
         }
-        return {_id: new ObjectId(), userName: '', description: '', addedAt: new Date()}
+        await usersCollection.insertOne(newUser)
+        return newUser
     },
     async updateUser(id: ObjectId, userName: string, description: string): Promise<boolean> {
         return true

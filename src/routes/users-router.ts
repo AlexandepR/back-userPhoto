@@ -1,13 +1,14 @@
 import {Request, Response, Router} from 'express'
 import { ObjectId } from 'mongodb'
 import {usersRepository} from '../repositories/users-repository'
+import {UserDBType} from "../repositories/types";
 
 export const usersRouter = Router({})
 
 usersRouter.post('/',
-    (req: Request<{},{},{userName: string, description: string}>, res: Response) => {
-        const photo = usersRepository.createUser(req.body.userName, req.body.description)
-        res.status(201).send(photo)
+    async (req: Request<{},{},{userName: string, description: string}>, res: Response) => {
+        const user = await usersRepository.createUser(req.body.userName, req.body.description)
+        res.status(201).send(user)
     })
 
 usersRouter.put('/:id',
@@ -20,8 +21,8 @@ usersRouter.put('/:id',
         }
     })
 
-usersRouter.get('/', (req: Request, res: Response) => {
-    const users = usersRepository.getUsers()
+usersRouter.get('/', async (req: Request, res: Response) => {
+    const users: Array<UserDBType> = await usersRepository.getUsers()
     res.send(users)
 })
 
