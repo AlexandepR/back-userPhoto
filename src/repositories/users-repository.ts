@@ -7,7 +7,7 @@ export const usersRepository = {
         return usersCollection.find({}).toArray()
     },
     async getUser(id: ObjectId): Promise<UserDBType | null> {
-        return null
+        return await usersCollection.findOne({_id: id})
     },
     async createUser(userName: string, description: string): Promise<UserDBType> {
         const newUser = {

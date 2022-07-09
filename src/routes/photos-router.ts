@@ -5,8 +5,11 @@ import {photosRepository} from '../repositories/photos-repository'
 export const photosRouter = Router({})
 
 photosRouter.post('/',
-    (req: Request<{},{},{userId: string, imageSrc: string}>, res: Response) => {
-        const photo = photosRepository.createPhoto(new ObjectId(req.body.userId), req.body.imageSrc)
+    async (req: Request<{},{},{userId: string, imageSrc: string}>, res: Response) => {
+        const photo = await photosRepository.createPhoto(new ObjectId(req.body.userId), req.body.imageSrc)
+
+        if (!photo) res.status(400).send();
+
         res.status(201).send(photo)
     })
 
