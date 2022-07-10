@@ -9,7 +9,7 @@ export const photosRepository = {
      */
     async findPhotos(userId: ObjectId | null): Promise<PhotoDBType[]> {
         if (!userId) {
-           return photosCollection.find({}).toArray()
+            return photosCollection.find({}).toArray()
         }
         return photosCollection.find({userId}).toArray()
     },
@@ -21,6 +21,12 @@ export const photosRepository = {
         return newPhoto
     },
     async updatePhotoDescription(id: ObjectId, description: string): Promise<boolean> {
+        // const photo = photosCollection.findOne({_id: id})
+        const updatePhoto = photosCollection.updateOne(
+            {_id: id},
+            {$set: {description: description}}
+        )
+
         return true
     },
     async deletePhoto(id: ObjectId): Promise<boolean> {
